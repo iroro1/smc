@@ -8,6 +8,7 @@ import { AccountScreen } from "../screens/protected/AccountScreen";
 import { colors } from "../utils/colors";
 import { Home2, Cake } from "iconsax-react-native";
 import { DininingIcon, OrdersIcon } from "../utils/Icons";
+import { HomeNavigator } from "../screens/protected/Home/HomeNavigator";
 
 type TabParamList = {
   Home: undefined;
@@ -27,8 +28,8 @@ export const TabNavigator = () => {
         tabBarStyle: {
           backgroundColor: colors.white,
           borderTopColor: colors.lightGray,
-          paddingTop: 8,
-          height: 93,
+          // paddingTop: 8,
+          height: 80,
         },
         tabBarActiveTintColor: colors.seaGreen,
         tabBarInactiveTintColor: "#AAAAAA",
@@ -41,7 +42,7 @@ export const TabNavigator = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeNavigator}
         options={{
           tabBarIcon: ({ color, size }: { color: string; size: number }) => (
             <Home2 variant="Bold" color={color} size={size} />
