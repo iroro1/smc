@@ -6,11 +6,13 @@ import { MenuScannerScreen } from "../screens/protected/MenuScannerScreen";
 import { OrderScreen } from "../screens/protected/OrderScreen";
 import { AccountScreen } from "../screens/protected/AccountScreen";
 import { colors } from "../utils/colors";
-import { Home2, ScanBarcode } from "iconsax-react-native";
+import { Home2, Cake } from "iconsax-react-native";
+import { DininingIcon, OrdersIcon } from "../utils/Icons";
 
 type TabParamList = {
   Home: undefined;
   "Menu Scanner": undefined;
+  "Dinining Options": undefined;
   Orders: undefined;
   Account: undefined;
 };
@@ -26,7 +28,7 @@ export const TabNavigator = () => {
           backgroundColor: colors.white,
           borderTopColor: colors.lightGray,
           paddingTop: 8,
-          height: 100,
+          height: 93,
         },
         tabBarActiveTintColor: colors.seaGreen,
         tabBarInactiveTintColor: "#AAAAAA",
@@ -47,11 +49,11 @@ export const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Menu Scanner"
+        name="Dinining Options"
         component={MenuScannerScreen}
         options={{
           tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-            <ScanBarcode variant="Bold" color={color} size={size} />
+            <DininingIcon w={size} h={size} color={color} />
           ),
         }}
       />
@@ -60,7 +62,7 @@ export const TabNavigator = () => {
         component={OrderScreen}
         options={{
           tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-            <Ionicons name="document-outline" size={size} color={color} />
+            <OrdersIcon w={size} h={size} color={color} active={true} />
           ),
         }}
       />

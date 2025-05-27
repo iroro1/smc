@@ -59,10 +59,7 @@ export const SetNewPasswordScreen = () => {
         animationType="fade"
         style={styles.modal}
       >
-        <TouchableWithoutFeedback
-          // onPress={() => setSuccess(false)}
-          style={styles.modal}
-        >
+        <TouchableWithoutFeedback style={styles.modal}>
           <View style={styles.modalContent}>
             <View style={styles.modalContentInner}>
               <TickCircle
@@ -116,11 +113,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContent: {
-    marginHorizontal: 20,
     padding: 20,
     borderRadius: 10,
-    // width: "100%",
-    height: "100%",
+    height: "80%",
     backgroundColor: colors.black + "50%",
     justifyContent: "center",
     alignItems: "center",
@@ -131,6 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 280,
     marginHorizontal: "auto",
+    width: "100%",
   },
   modalTitle: {
     fontSize: 18,
@@ -144,7 +140,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     color: "#475467",
     fontWeight: "400",
-    width: 330,
+    width: "100%",
     lineHeight: 20,
   },
   modalIcon: {

@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 export const MenuScannerScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Menu Scanner Screen</Text>
+      <Text>Dinning Options Screen</Text>
     </View>
   );
 };

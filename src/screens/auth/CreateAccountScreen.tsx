@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
   ScrollView,
@@ -28,6 +28,21 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const CreateAccountScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+  });
+
+  const isFormValid = () => {
+    return (
+      formData.fullName.trim() !== "" &&
+      formData.email.trim() !== "" &&
+      formData.phoneNumber.trim() !== "" &&
+      formData.password.trim() !== ""
+    );
+  };
 
   const createAccount = async () => {
     navigation.navigate("VerifyCode");
@@ -43,21 +58,44 @@ export const CreateAccountScreen = () => {
           <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.form}>
-        <KeyboardAvoidingView style={styles.form} behavior="padding">
-          <AppTextInput placeholder="e.g., John Doe" inputTitle="Full Name" />
+      <ScrollView>
+        <KeyboardAvoidingView behavior="padding">
+          <AppTextInput
+            placeholder="e.g., John Doe"
+            inputTitle="Full Name"
+            value={formData.fullName}
+            onChangeText={(text) =>
+              setFormData({ ...formData, fullName: text })
+            }
+          />
           <AppTextInput
             inputTitle="Email Address"
-            placeholder="e.g., johndoe@gmail.com   "
+            placeholder="e.g., johndoe@gmail.com"
+            value={formData.email}
+            onChangeText={(text) => setFormData({ ...formData, email: text })}
           />
           <AppTextInput
             inputTitle="Phone Number"
             placeholder="e.g., +2348060000000"
+            value={formData.phoneNumber}
+            onChangeText={(text) =>
+              setFormData({ ...formData, phoneNumber: text })
+            }
           />
-          <AppPasswordInput inputTitle="Password" />
+          <AppPasswordInput
+            inputTitle="Password"
+            value={formData.password}
+            onChangeText={(text) =>
+              setFormData({ ...formData, password: text })
+            }
+          />
         </KeyboardAvoidingView>
       </ScrollView>
-      <AppButton title="Create Account" onPress={() => createAccount()} />
+      <AppButton
+        title="Create Account"
+        onPress={() => createAccount()}
+        disabled={!isFormValid()}
+      />
     </SafeAreaView>
   );
 };
@@ -73,7 +111,7 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     gap: 24,
-    marginTop: 32,
+    // marginTop: 16,
   },
   title: {
     fontSize: 24,
@@ -84,14 +122,15 @@ const styles = StyleSheet.create({
   subtitleContainer: {
     flexDirection: "row",
     marginBottom: 24,
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   subtitle: {
     fontSize: 16,
     fontWeight: "400",
     position: "relative",
-    width: 200,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   link: {

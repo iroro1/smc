@@ -4,12 +4,15 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 import { colors } from "../utils/colors";
 import { useNavigation } from "@react-navigation/native";
 
-export const AppBackButton = () => {
+export const AppBackButton = ({ variant = 1 }: { variant?: number }) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
-      style={styles.backButton}
+      style={[
+        styles.backButton,
+        { backgroundColor: variant === 2 ? "transparent" : "#F2F4F7" },
+      ]}
       onPress={() => navigation.goBack()}
     >
       <ArrowLeft color={colors.black} size={24} />
@@ -19,7 +22,7 @@ export const AppBackButton = () => {
 
 const styles = StyleSheet.create({
   backButton: {
-    backgroundColor: colors.lightGray,
+    backgroundColor: "#F2F4F7",
     borderRadius: 20,
     height: 40,
     width: 40,

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -28,17 +28,24 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 export const LoginScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
     // TODO: Replace with actual login logic
     dispatch(
       setUser({
         id: "1",
-        email: "user@example.com",
-        name: "Test User",
+        // email: "user@example.com",
+        email: email,
+        name: "Sam Smith",
+        profileImage:
+          "https://images.pexels.com/photos/7275385/pexels-photo-7275385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       })
     );
   };
+
+  const isFormValid = email.trim() !== "" && password.trim() !== "";
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,8 +61,14 @@ export const LoginScreen = () => {
         <AppTextInput
           placeholder="e.g., johndoe@gmail.com"
           inputTitle="Email Address"
+          value={email}
+          onChangeText={setEmail}
         />
-        <AppPasswordInput inputTitle="Password" />
+        <AppPasswordInput
+          inputTitle="Password"
+          value={password}
+          onChangeText={setPassword}
+        />
 
         <TouchableOpacity
           onPress={() => navigation.navigate("ForgotPassword")}
@@ -64,7 +77,14 @@ export const LoginScreen = () => {
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
       </ScrollView>
-      <AppButton title="Login" onPress={handleLogin} />
+      <AppButton
+        title="Login"
+        onPress={handleLogin}
+        disabled={!isFormValid}
+        style={{
+          marginBottom: 30,
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -72,8 +92,8 @@ export const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    paddingTop: 0,
+    paddingHorizontal: 16,
+    paddingTop: 10,
     position: "relative",
     backgroundColor: colors.white,
   },
@@ -81,11 +101,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF4D00",
     padding: 10,
     borderRadius: 5,
-    marginTop: 20,
+    marginTop: 10,
   },
   form: {
-    gap: 24,
-    marginTop: 32,
+    gap: 12,
+    height: "80%",
+    // marginTop: 32,
   },
   buttonText: {
     color: "white",
@@ -94,19 +115,20 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "600",
-    marginBottom: 8,
+    // marginBottom: 8,
     marginTop: 16,
   },
   subtitleContainer: {
     flexDirection: "row",
     marginBottom: 24,
     gap: 4,
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   subtitle: {
     fontSize: 16,
     fontWeight: "400",
     position: "relative",
-    width: 175,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -117,7 +139,7 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     alignSelf: "flex-start",
-    marginTop: 16,
+    // marginTop: 16,
   },
   forgotPasswordText: {
     color: colors.seaGreen,

@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "500",
   },
   buttonTwo: {
     backgroundColor: colors.seaGreen + 20,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   buttonTextTwo: {
     color: colors.seaGreen,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "500",
   },
   slideTextContainer: {
     alignItems: "center",

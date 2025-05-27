@@ -10,8 +10,32 @@ import { VerifyCodeScreen } from "../screens/auth/VerifyCodeScreen";
 import { TabNavigator } from "./TabNavigator";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import ProfileScreen from "../screens/protected/Accounts/ProfileScreen";
+import AditProfileScreen from "../screens/protected/Accounts/EditProfileScreen";
+import EditPasswordScreen from "../screens/protected/Accounts/EditPasswordScreen";
+import Address from "../screens/protected/Accounts/Address";
+import EditAddressScreen from "../screens/protected/Accounts/EditAddressScreen";
+import { OrderSummaryScreen } from "../screens/protected/Orders/OrderSummaryScreen";
+import { Order } from "../screens/protected/Orders/OrderCard";
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Onboarding: undefined;
+  Login: undefined;
+  CreateAccount: undefined;
+  ForgotPassword: undefined;
+  VerifyCode: undefined;
+  ResetCode: undefined;
+  SetNewPassword: undefined;
+  Main: undefined;
+  Profile: undefined;
+  EditProfile: undefined;
+  EditPassword: undefined;
+  Address: undefined;
+  EditAddress: undefined;
+  OrderSummary: { order: Order };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigation = () => {
   const isAuthenticated = useSelector(
@@ -43,7 +67,15 @@ export const RootNavigation = () => {
         </>
       ) : (
         // Protected Stack
-        <Stack.Screen name="Main" component={TabNavigator} />
+        <>
+          <Stack.Screen name="Main" component={TabNavigator} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="EditProfile" component={AditProfileScreen} />
+          <Stack.Screen name="EditPassword" component={EditPasswordScreen} />
+          <Stack.Screen name="Address" component={Address} />
+          <Stack.Screen name="EditAddress" component={EditAddressScreen} />
+          <Stack.Screen name="OrderSummary" component={OrderSummaryScreen} />
+        </>
       )}
     </Stack.Navigator>
   );

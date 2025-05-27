@@ -32,7 +32,7 @@ export const VerifyCodeScreen = () => {
         <Text style={styles.description}>
           Enter the code sent to your email address
         </Text>
-        <View style={styles.form}>
+        <View>
           <AppOTP
             onComplete={(e) => {
               console.log("complete", e);
@@ -87,9 +87,9 @@ export const VerifyCodeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
+  container: { flex: 1, paddingHorizontal: 16 },
   content: {
-    flex: 1,
+    flex: 0.9,
   },
   title: {
     fontSize: 24,
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
+    paddingHorizontal: 16,
     marginTop: 32,
   },
   error: {
@@ -133,6 +134,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginBottom: 10,
     marginTop: 20,
+    textAlign: "center",
   },
   modalDescription: {
     fontSize: 16,
