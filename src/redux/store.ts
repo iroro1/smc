@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import authReducer from "./slices/authSlice";
 import menuReducer from "./slices/menuSlice";
+import cartReducer from "./slices/cartSlice";
 
 // Create the store
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     menu: menuReducer,
+    cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

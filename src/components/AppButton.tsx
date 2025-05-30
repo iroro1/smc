@@ -26,11 +26,11 @@ export const AppButton: React.FC<AppButtonProps> = ({
       onPress={onPress}
       style={[
         styles.button,
-        style,
         {
           opacity: disabled ? 0.5 : 1,
           backgroundColor: disabled ? colors.gray : colors.seaGreen,
         },
+        style,
       ]}
       disabled={disabled}
     >

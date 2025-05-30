@@ -8,7 +8,7 @@ import AddressCard from "../../../components/AddressCard";
 import { colors } from "../../../utils/colors";
 
 type RootStackParamList = {
-  EditAddress: { id?: number; isAdd: boolean };
+  EditHomeAddress: { id?: number; isAdd: boolean };
 };
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -34,18 +34,18 @@ const mockAddresses = [
   },
 ];
 
-export default function Address() {
+export default function HomeAddress() {
   const navigation = useNavigation<NavigationProp>();
   const [selectedAddress, setSelectedAddress] = useState<number | null>(null);
   const [addresses, setAddresses] =
     useState<typeof mockAddresses>(mockAddresses);
 
   const handleEdit = (id: number) => {
-    navigation.navigate("EditAddress", { id, isAdd: false });
+    navigation.navigate("EditHomeAddress", { id, isAdd: false });
   };
 
   const handleAdd = () => {
-    navigation.navigate("EditAddress", { isAdd: true });
+    navigation.navigate("EditHomeAddress", { isAdd: true });
   };
 
   const handleDelete = (id: number) => {

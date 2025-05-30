@@ -29,7 +29,7 @@ export const TabNavigator = () => {
           backgroundColor: colors.white,
           borderTopColor: colors.lightGray,
           // paddingTop: 8,
-          height: 80,
+          height: 90,
         },
         tabBarActiveTintColor: colors.seaGreen,
         tabBarInactiveTintColor: "#AAAAAA",

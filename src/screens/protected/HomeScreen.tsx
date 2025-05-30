@@ -19,7 +19,7 @@ import { colors } from "../../utils/colors";
 
 type HomeStackParamList = {
   HomeScreen: undefined;
-  RestaurantMenu: { restaurantId: string };
+  RestaurantMenu: { restaurantId: string; restaurantName: string };
 };
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -222,6 +222,7 @@ export const HomeScreen = () => {
             onPress={() => {
               navigation.navigate("RestaurantMenu", {
                 restaurantId: item.id,
+                restaurantName: item.name,
               });
             }}
           >

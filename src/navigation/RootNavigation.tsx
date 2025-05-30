@@ -17,7 +17,17 @@ import Address from "../screens/protected/Accounts/Address";
 import EditAddressScreen from "../screens/protected/Accounts/EditAddressScreen";
 import { OrderSummaryScreen } from "../screens/protected/Orders/OrderSummaryScreen";
 import { Order } from "../screens/protected/Orders/OrderCard";
+import { DineOrDeliverScreen } from "../screens/protected/Home/DineOrDeliverScreen";
 
+type HomeStackParamList = {
+  HomeScreen: undefined; // your main home screen
+  RestaurantMenu: {
+    // the nested screen with params
+    externalDelivery?: boolean;
+    mealId?: number;
+  };
+  // other home stack screens...
+};
 export type RootStackParamList = {
   Onboarding: undefined;
   Login: undefined;
@@ -26,13 +36,18 @@ export type RootStackParamList = {
   VerifyCode: undefined;
   ResetCode: undefined;
   SetNewPassword: undefined;
-  Main: undefined;
+  Main: {
+    screen: "Home";
+    params?: HomeStackParamList;
+  };
   Profile: undefined;
   EditProfile: undefined;
   EditPassword: undefined;
   Address: undefined;
   EditAddress: undefined;
   OrderSummary: { order: Order };
+  DineOrDeliver: undefined;
+  Restaurantmenu: { externalDelivery?: boolean; mealId?: number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -75,6 +90,7 @@ export const RootNavigation = () => {
           <Stack.Screen name="Address" component={Address} />
           <Stack.Screen name="EditAddress" component={EditAddressScreen} />
           <Stack.Screen name="OrderSummary" component={OrderSummaryScreen} />
+          <Stack.Screen name="DineOrDeliver" component={DineOrDeliverScreen} />
         </>
       )}
     </Stack.Navigator>

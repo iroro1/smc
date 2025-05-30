@@ -6,6 +6,7 @@ import { store } from "./src/redux/store";
 import { RootNavigation } from "./src/navigation/RootNavigation";
 import * as Updates from "expo-updates";
 import { useEffect } from "react";
+import { PortalProvider } from "@gorhom/portal";
 
 export default function App() {
   useEffect(() => {
@@ -26,16 +27,18 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <View style={{ flex: 1 }}>
-          <RootNavigation />
-          <StatusBar
-            style="auto"
-            animated={true}
-            hideTransitionAnimation="fade"
-          />
-        </View>
-      </NavigationContainer>
+      <PortalProvider>
+        <NavigationContainer>
+          <View style={{ flex: 1 }}>
+            <RootNavigation />
+            <StatusBar
+              style="auto"
+              animated={true}
+              hideTransitionAnimation="fade"
+            />
+          </View>
+        </NavigationContainer>
+      </PortalProvider>
     </Provider>
   );
 }

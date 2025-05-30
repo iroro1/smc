@@ -87,7 +87,11 @@ export const VerifyCodeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingHorizontal: 16 },
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    backgroundColor: colors.white,
+  },
   content: {
     flex: 0.9,
   },
