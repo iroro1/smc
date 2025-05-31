@@ -25,7 +25,7 @@ import { DineOptions } from "./DineOptions";
 import { SeatedPath } from "./SeatedPath";
 import AwaitingPayment from "./AwaitingPayment";
 import TakeoutPath from "./TakeoutPath";
-import InTransitPath from "./InTransitPath";
+import { InTransitPath } from "./InTransitPath";
 import { MyDishesTwo } from "./MyDishesTwo";
 
 const HomeStack = createNativeStackNavigator();
@@ -39,6 +39,9 @@ type RootStackParamList = {
   DineOrDeliver: undefined;
   SeatedPath: undefined;
   AwaitingPayment: undefined;
+  TakeoutPath: undefined;
+  InTransitPath: undefined;
+  MyDishesTwo: undefined;
 };
 
 export const HomeNavigator = () => {
@@ -92,52 +95,52 @@ export const HomeNavigator = () => {
         <HomeStack.Screen name="InTransitPath" component={InTransitPath} />
       </HomeStack.Navigator>
 
-      <Portal>
-        <View style={styles.fabMenuContainer} pointerEvents="box-none">
-          <Animated.View
-            style={{
-              opacity: fabAnim,
-              transform: [
-                {
-                  translateY: fabAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [40, 0],
-                  }),
-                },
-              ],
+      {/* <Portal> */}
+      <View style={styles.fabMenuContainer} pointerEvents="box-none">
+        <Animated.View
+          style={{
+            opacity: fabAnim,
+            transform: [
+              {
+                translateY: fabAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [40, 0],
+                }),
+              },
+            ],
+          }}
+          pointerEvents={fabOpen ? "auto" : "none"}
+        >
+          <TouchableOpacity
+            style={styles.fabAction}
+            onPress={() => {
+              handleFabClose();
+              navigation.navigate("Main", {
+                screen: "Home",
+                params: { screen: "MyDishes" },
+              });
             }}
-            pointerEvents={fabOpen ? "auto" : "none"}
           >
-            <TouchableOpacity
-              style={styles.fabAction}
-              onPress={() => {
-                handleFabClose();
-                navigation.navigate("Main", {
-                  screen: "Home",
-                  params: { screen: "MyDishes" },
-                });
-              }}
-            >
-              <View style={styles.fabIconCircle}>
-                <DollarCircle size={24} color={colors.white} variant="Bold" />
-              </View>
-              <Text style={styles.fabActionText}>Checkout</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.fabAction} onPress={() => {}}>
-              <View style={styles.fabIconCircle}>
-                <MessageIcon />
-              </View>
-            </TouchableOpacity>
-          </Animated.View>
-          <TouchableOpacity style={styles.fab} onPress={handleFabPress}>
-            {fabOpen ? (
-              <CloseCircle size={24} color={colors.white} variant="Bold" />
-            ) : (
-              <AddCircle size={24} color={colors.white} variant="Bold" />
-            )}
+            <View style={styles.fabIconCircle}>
+              <DollarCircle size={24} color={colors.white} variant="Bold" />
+            </View>
+            <Text style={styles.fabActionText}>Checkout</Text>
           </TouchableOpacity>
-        </View>
-      </Portal>
+          <TouchableOpacity style={styles.fabAction} onPress={() => {}}>
+            <View style={styles.fabIconCircle}>
+              <MessageIcon />
+            </View>
+          </TouchableOpacity>
+        </Animated.View>
+        <TouchableOpacity style={styles.fab} onPress={handleFabPress}>
+          {fabOpen ? (
+            <CloseCircle size={24} color={colors.white} variant="Bold" />
+          ) : (
+            <AddCircle size={24} color={colors.white} variant="Bold" />
+          )}
+        </TouchableOpacity>
+      </View>
+      {/* </Portal> */}
     </View>
   );
 };

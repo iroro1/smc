@@ -7,6 +7,7 @@ import { RootNavigation } from "./src/navigation/RootNavigation";
 import * as Updates from "expo-updates";
 import { useEffect } from "react";
 import { PortalProvider } from "@gorhom/portal";
+import Toast from "react-native-toast-message";
 
 export default function App() {
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function App() {
         <NavigationContainer>
           <View style={{ flex: 1 }}>
             <RootNavigation />
+            <Toast />
             <StatusBar
               style="auto"
               animated={true}

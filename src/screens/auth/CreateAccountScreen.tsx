@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
+  Button,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
@@ -15,6 +16,11 @@ import { AppPasswordInput } from "../../components/AppPasswordInput";
 import { AppTextInput } from "../../components/AppTextInput";
 import { colors } from "../../utils/colors";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { authService } from "../../services/authService";
+import Toast from "react-native-toast-message";
+import tw from "twrnc";
+import { useDispatch } from "react-redux";
+import { setRegisterData, setUser } from "../../redux/slices/authSlice";
 
 type RootStackParamList = {
   Main: undefined;
@@ -27,12 +33,15 @@ type RootStackParamList = {
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const CreateAccountScreen = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<NavigationProp>();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phoneNumber: "",
     password: "",
+    confirmPassword: "",
   });
 
   const isFormValid = () => {
@@ -40,12 +49,48 @@ export const CreateAccountScreen = () => {
       formData.fullName.trim() !== "" &&
       formData.email.trim() !== "" &&
       formData.phoneNumber.trim() !== "" &&
-      formData.password.trim() !== ""
+      formData.password.trim() !== "" &&
+      formData.password.trim().length >= 8
     );
   };
 
+  // console.log("formData", formData);
+
   const createAccount = async () => {
-    navigation.navigate("VerifyCode");
+    setIsLoading(true);
+    if (isFormValid()) {
+      try {
+        const response = await authService.register(formData);
+        console.log("Registration response:", response);
+
+        if (response?.data?.token) {
+          Toast.show({
+            type: "success",
+            text1: "Account created successfully",
+            text2: "Please check your email to verify your account",
+          });
+          dispatch(setUser(response.data));
+          // navigation.navigate("VerifyCode");
+        }
+      } catch (error: Error | any) {
+        console.error("Error creating account:", error);
+
+        Toast.show({
+          type: "error",
+          text1: "Error creating account",
+          text2: error.message,
+        });
+      }
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Invalid form",
+        text2:
+          "Please fill in all fields and ensure password is at least 8 characters",
+      });
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -86,12 +131,23 @@ export const CreateAccountScreen = () => {
             inputTitle="Password"
             value={formData.password}
             onChangeText={(text) =>
-              setFormData({ ...formData, password: text })
+              setFormData({
+                ...formData,
+                password: text,
+                confirmPassword: text,
+              })
             }
           />
+          {formData.password.trim().length > 0 &&
+            formData.password.trim().length < 8 && (
+              <Text style={tw`text-red-500 text-[12px] mt-[-8px] mb-8`}>
+                Password must be at least 8 characters
+              </Text>
+            )}
         </KeyboardAvoidingView>
       </ScrollView>
       <AppButton
+        loading={isLoading}
         title="Create Account"
         onPress={() => createAccount()}
         disabled={!isFormValid()}
@@ -103,7 +159,7 @@ export const CreateAccountScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 16,
     paddingTop: 0,
     position: "relative",
     backgroundColor: colors.white,

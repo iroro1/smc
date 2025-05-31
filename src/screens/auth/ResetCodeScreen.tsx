@@ -5,12 +5,51 @@ import { AppBackButton } from "../../components/AppBackButton";
 import { AppTextInput } from "../../components/AppTextInput";
 import { AppButton } from "../../components/AppButton";
 import { AppOTP } from "../../components/AppOTP";
-import { useNavigation } from "@react-navigation/native";
-export const ResetCodeScreen = () => {
-  const navigation = useNavigation();
+import { RouteProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../../navigation/RootNavigation";
+import { authService } from "../../services/authService";
+import Toast from "react-native-toast-message";
 
-  const verifyCode = () => {
-    navigation.navigate("SetNewPassword" as never);
+interface ResetCodeProps {
+  route: RouteProp<RootStackParamList, "ResetCode">;
+}
+
+export const ResetCodeScreen = ({ route }: ResetCodeProps) => {
+  const navigation = useNavigation();
+  const { email } = route.params;
+  const [code, setCode] = React.useState("");
+  const [isCodeValid, setIsCodeValid] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  console.log("email", email);
+
+  const verifyCode = async () => {
+    setIsLoading(true);
+    try {
+      const response = await authService.confirmToken({
+        email,
+        code,
+      });
+      console.log("response", response);
+
+      if (response.status.toLowerCase() === "success") {
+        Toast.show({
+          type: "success",
+          text1: response.data,
+          text2: response.message,
+        });
+        navigation.navigate("SetNewPassword", { email });
+      }
+    } catch (error: Error | any) {
+      Toast.show({
+        type: "error",
+        text1: "Error verifying code",
+        text2: error.message,
+      });
+      console.log("error", error);
+    }
+    setIsLoading(false);
+    // navigation.navigate("SetNewPassword" as never);
   };
 
   return (
@@ -22,10 +61,20 @@ export const ResetCodeScreen = () => {
           Enter the code sent to your email address
         </Text>
         <View style={styles.form}>
-          <AppOTP onComplete={verifyCode} />
+          <AppOTP
+            onComplete={(code) => {
+              setCode(code);
+              code.length === 4 ? setIsCodeValid(true) : setIsCodeValid(false);
+            }}
+          />
         </View>
       </View>
-      <AppButton title="Verify code" onPress={verifyCode} />
+      <AppButton
+        title="Verify code"
+        onPress={verifyCode}
+        loading={isLoading}
+        disabled={!isCodeValid}
+      />
     </SafeAreaView>
   );
 };

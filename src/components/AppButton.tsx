@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ViewStyle,
   StyleProp,
+  ActivityIndicator,
 } from "react-native";
 import { colors } from "../utils/colors";
 
@@ -13,6 +14,7 @@ interface AppButtonProps {
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 export const AppButton: React.FC<AppButtonProps> = ({
@@ -20,6 +22,7 @@ export const AppButton: React.FC<AppButtonProps> = ({
   onPress,
   style,
   disabled,
+  loading,
 }) => {
   return (
     <TouchableOpacity
@@ -35,6 +38,13 @@ export const AppButton: React.FC<AppButtonProps> = ({
       disabled={disabled}
     >
       <Text style={styles.buttonText}>{title}</Text>
+      {loading && (
+        <ActivityIndicator
+          style={{ marginLeft: 10 }}
+          size="small"
+          color={colors.white}
+        />
+      )}
     </TouchableOpacity>
   );
 };
@@ -48,6 +58,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 48,
+    flexDirection: "row",
   },
   buttonText: {
     color: "white",

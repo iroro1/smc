@@ -16,6 +16,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AppTextInput } from "../../components/AppTextInput";
 import { AppButton } from "../../components/AppButton";
 import { AppPasswordInput } from "../../components/AppPasswordInput";
+import { authService } from "../../services/authService";
+import Toast from "react-native-toast-message";
 
 type RootStackParamList = {
   Main: undefined;
@@ -30,19 +32,32 @@ export const LoginScreen = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    setIsLoading(true);
     // TODO: Replace with actual login logic
-    dispatch(
-      setUser({
-        id: "1",
-        // email: "user@example.com",
-        email: email,
-        name: "Sam Smith",
-        profileImage:
-          "https://images.pexels.com/photos/7275385/pexels-photo-7275385.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      })
-    );
+    try {
+      const response = await authService.login({ email, password });
+      if (response?.data?.token) {
+        dispatch(setUser(response.data));
+        Toast.show({
+          type: "success",
+          text1: "Login successful",
+          text2: "You are now logged in",
+        });
+        navigation.navigate("Main");
+      }
+    } catch (error: Error | any) {
+      console.error(error);
+      Toast.show({
+        type: "error",
+        text1: "Login failed",
+        text2: error.message,
+        // text2: "Please try again",
+      });
+    }
+    setIsLoading(false);
   };
 
   const isFormValid = email.trim() !== "" && password.trim() !== "";
@@ -81,6 +96,7 @@ export const LoginScreen = () => {
         title="Login"
         onPress={handleLogin}
         disabled={!isFormValid}
+        loading={isLoading}
         style={{
           marginBottom: 30,
         }}

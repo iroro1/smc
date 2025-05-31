@@ -1,10 +1,8 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
-  ArrowDown,
   ArrowDown2,
   Call,
-  Check,
   CloseCircle,
   Location,
   TickCircle,
@@ -30,10 +28,10 @@ import Svg, {
   Rect,
   Stop,
 } from "react-native-svg";
-import { AppBackButton } from "../../../components/AppBackButton";
-import { colors } from "../../../utils/colors";
 import tw from "twrnc";
+import { AppBackButton } from "../../../components/AppBackButton";
 import { AppButton } from "../../../components/AppButton";
+import { colors } from "../../../utils/colors";
 //  import { RootStackParamList } from "../../../navigation/RootNavigation";
 type IconProps = { w: number; h: number; color?: string };
 
@@ -102,6 +100,8 @@ type RootStackParamList = {
   Cart: undefined;
   Restaurantmenu: { externalDelivery?: boolean; mealId?: number };
   DineOrDeliver: { externalDelivery?: boolean; mealId?: number };
+  Order: { externalDelivery?: boolean; mealId?: number };
+  MyDishesTwo: undefined;
 };
 
 type DineOrDeliverNavigationProp = NativeStackNavigationProp<
@@ -440,7 +440,7 @@ export const SeatedPath = () => {
                   <Text
                     style={tw`text-[#292F36] text-[16px] font-[400] text-left mt-[8px] leading-[24px]`}
                   >
-                    Start your order by selecting your table number. We’ll bring
+                    Start your order by selecting your table number. We'll bring
                     your food right to you.
                   </Text>
 

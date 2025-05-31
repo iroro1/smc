@@ -5,12 +5,52 @@ import { AppBackButton } from "../../components/AppBackButton";
 import { AppTextInput } from "../../components/AppTextInput";
 import { AppButton } from "../../components/AppButton";
 import { useNavigation } from "@react-navigation/native";
+import { authService } from "../../services/authService";
+import Toast from "react-native-toast-message";
 
-export const ForgotPasswordScreen = () => {
+interface ResetCodeParams {
+  email: string;
+}
+
+const ForgotPasswordScreen = () => {
+  const [email, setEmail] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const navigation = useNavigation();
 
   const getResetCode = async () => {
-    navigation.navigate("ResetCode" as never);
+    if (email.trim() === "") {
+      Toast.show({
+        type: "error",
+        text1: "Email is required",
+        text2: "Please enter your email address",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await authService.forgotPassword({ email });
+      console.log("response", response);
+
+      if (response.status.toLowerCase() === "success") {
+        Toast.show({
+          type: "success",
+          text1: response.data,
+          text2: response.message,
+        });
+
+        navigation.navigate("ResetCode" as never, { email } as never);
+      }
+    } catch (error: any) {
+      console.error(error);
+      Toast.show({
+        type: "error",
+        text1: "Error getting reset code",
+        text2: error.message || "Something went wrong",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,10 +66,18 @@ export const ForgotPasswordScreen = () => {
           <AppTextInput
             inputTitle="Email address"
             placeholder="e.g., johndoe@example.com"
+            value={email}
+            onChangeText={(text) => setEmail(text.toLowerCase())}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
         </View>
       </View>
-      <AppButton title="Get reset code" onPress={getResetCode} />
+      <AppButton
+        title="Get reset code"
+        onPress={getResetCode}
+        loading={loading}
+      />
     </SafeAreaView>
   );
 };
@@ -53,3 +101,5 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
+
+export default ForgotPasswordScreen;

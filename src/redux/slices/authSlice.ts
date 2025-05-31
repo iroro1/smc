@@ -3,13 +3,21 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface AuthState {
   isAuthenticated: boolean;
   user: null | {
-    id: string;
+    id: number;
     email: string;
-    name: string;
-    profileImage?: string;
+    fullName: string;
+    imageUrl?: string;
+    phoneNumber: string;
+    token: string;
   };
   loading: boolean;
   error: string | null;
+  registerData: null | {
+    email: string;
+    password: string;
+    phoneNumber: string;
+    fullName: string;
+  };
 }
 
 const initialState: AuthState = {
@@ -17,6 +25,7 @@ const initialState: AuthState = {
   user: null,
   loading: false,
   error: null,
+  registerData: null,
 };
 
 const authSlice = createSlice({
@@ -26,9 +35,17 @@ const authSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setRegisterData: (
+      state,
+      action: PayloadAction<AuthState["registerData"]>
+    ) => {
+      state.registerData = action.payload;
+    },
     setUser: (state, action: PayloadAction<AuthState["user"]>) => {
       state.user = action.payload;
-      state.isAuthenticated = !!action.payload;
+      console.log(action.payload, "payload");
+
+      state.isAuthenticated = action.payload?.token ? true : false;
       state.error = null;
     },
     setError: (state, action: PayloadAction<string>) => {
@@ -43,5 +60,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setLoading, setUser, setError, logout } = authSlice.actions;
+export const { setLoading, setUser, setError, logout, setRegisterData } =
+  authSlice.actions;
 export default authSlice.reducer;

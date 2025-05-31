@@ -1,7 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CreateAccountScreen } from "../screens/auth/CreateAccountScreen";
-import { ForgotPasswordScreen } from "../screens/auth/ForgotPasswordScreen";
 import { LoginScreen } from "../screens/auth/LoginScreen";
 import { OnboardingScreen } from "../screens/auth/OnboardingScreen";
 import { ResetCodeScreen } from "../screens/auth/ResetCodeScreen";
@@ -18,6 +17,7 @@ import EditAddressScreen from "../screens/protected/Accounts/EditAddressScreen";
 import { OrderSummaryScreen } from "../screens/protected/Orders/OrderSummaryScreen";
 import { Order } from "../screens/protected/Orders/OrderCard";
 import { DineOrDeliverScreen } from "../screens/protected/Home/DineOrDeliverScreen";
+import ForgotPasswordScreen from "../screens/auth/ForgotPasswordScreen";
 
 type HomeStackParamList = {
   HomeScreen: undefined; // your main home screen
@@ -34,7 +34,9 @@ export type RootStackParamList = {
   CreateAccount: undefined;
   ForgotPassword: undefined;
   VerifyCode: undefined;
-  ResetCode: undefined;
+  ResetCode: {
+    email: string;
+  };
   SetNewPassword: undefined;
   Main: {
     screen: "Home";
@@ -56,6 +58,7 @@ export const RootNavigation = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+  console.log("Is authenticated:", isAuthenticated);
 
   return (
     <Stack.Navigator

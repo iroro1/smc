@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // API base URL - replace with your actual API URL
-export const API_BASE_URL = "https://api.smartmenu.com/v1";
+export const API_BASE_URL = "https://dev2.optimusai.ai/api/v1/ß";
 
 // Create axios instance with default config
 export const apiClient = axios.create({
