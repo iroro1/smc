@@ -28,6 +28,7 @@ import { colors } from "../../utils/colors";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../redux/store";
 import { logout } from "../../redux/slices/authSlice";
+import { authService } from "../../services/authService";
 
 type RootStackParamList = {
   Login: undefined;
@@ -92,6 +93,15 @@ export const AccountScreen = () => {
         iconColor: colors.seaGreen,
       },
     ],
+  };
+
+  const logOutFn = () => {
+    dispatch(logout());
+    setShowLogoutModal(false);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    });
   };
   return (
     <View style={styles.container}>
@@ -304,14 +314,7 @@ export const AccountScreen = () => {
                       <Text style={styles.modalButtonCancelText}>Cancel</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => {
-                        dispatch(logout());
-                        setShowLogoutModal(false);
-                        navigation.reset({
-                          index: 0,
-                          routes: [{ name: "Login" }],
-                        });
-                      }}
+                      onPress={logOutFn}
                       style={styles.modalButtonDelete}
                     >
                       <Text style={styles.modalButtonDeleteText}>Logout</Text>

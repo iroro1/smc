@@ -30,7 +30,6 @@ const ForgotPasswordScreen = () => {
     setLoading(true);
     try {
       const response = await authService.forgotPassword({ email });
-      console.log("response", response);
 
       if (response.status.toLowerCase() === "success") {
         Toast.show({
@@ -38,7 +37,6 @@ const ForgotPasswordScreen = () => {
           text1: response.data,
           text2: response.message,
         });
-
         navigation.navigate("ResetCode" as never, { email } as never);
       }
     } catch (error: any) {

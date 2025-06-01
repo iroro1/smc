@@ -8,23 +8,46 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppBackButton } from "../../components/AppBackButton";
 import { AppButton } from "../../components/AppButton";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { AppPasswordInput } from "../../components/AppPasswordInput";
 import { useState } from "react";
 import { colors } from "../../utils/colors";
 import { TickCircle } from "iconsax-react-native";
+import Toast from "react-native-toast-message";
+import { authService } from "../../services/authService";
 
 export const SetNewPasswordScreen = () => {
   const navigation = useNavigation();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [success, setSuccess] = useState(false);
-  const handleSetNewPassword = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const route = useRoute();
+  const { email } = route.params;
+
+  const handleSetNewPassword = async () => {
+    setIsLoading(true);
     if (newPassword === confirmNewPassword) {
       setSuccess(true);
-    } else {
-      setSuccess(false);
+      try {
+        const response = await authService.resetPassword({
+          email,
+          newPassword,
+          confirmPassword: confirmNewPassword,
+        });
+        if (response.status.toLowerCase() === "success") {
+          setSuccess(true);
+        }
+      } catch (error: any) {
+        Toast.show({
+          type: "error",
+          text1: "Error setting new password",
+          text2: error.message,
+        });
+        setSuccess(false);
+      }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -75,6 +98,7 @@ export const SetNewPasswordScreen = () => {
               </Text>
               <AppButton
                 title="Go to login"
+                loading={isLoading}
                 onPress={() => {
                   setSuccess(false);
                   navigation.navigate("Login");

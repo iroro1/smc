@@ -2,7 +2,15 @@
 import axios from "axios";
 import { API_BASE_URL } from "../utils/api/config";
 import { ApiResponse } from "../utils/types";
-import { CONFIRM_TOKEN, FORGOT_PASSWORD, LOGIN, SIGNUP } from ".";
+import {
+  CHANGE_PASSWORD,
+  CONFIRM_TOKEN,
+  FORGOT_PASSWORD,
+  LOGIN,
+  LOGOUT,
+  RESET_PASSWORD,
+  SIGNUP,
+} from ".";
 
 interface LoginCredentials {
   email: string;
@@ -21,8 +29,8 @@ interface ForgotPasswordData {
 }
 
 interface ResetPasswordData {
-  token: string;
-  password: string;
+  email: string;
+  newPassword: string;
   confirmPassword: string;
 }
 
@@ -55,38 +63,42 @@ class AuthService {
     return response.data;
   }
 
-  // WIP
+  // Working
   async forgotPassword(
     data: ForgotPasswordData
   ): Promise<ApiResponse<{ message: string }>> {
     const response = await this.apiClient.post(FORGOT_PASSWORD, data);
     return response.data;
   }
+  // Working
   async confirmToken(data: any): Promise<ApiResponse<{ message: string }>> {
     const response = await this.apiClient.post(CONFIRM_TOKEN, data);
     return response.data;
   }
+
+  // WIP
   async resetPassword(
     data: ResetPasswordData
   ): Promise<ApiResponse<{ message: string }>> {
-    const response = await this.apiClient.post("/auth/reset-password", data);
+    const response = await this.apiClient.post(RESET_PASSWORD, data);
     return response.data;
   }
 
+  // INAPP pasword change
   async changePassword(
     data: ChangePasswordData
   ): Promise<ApiResponse<{ message: string }>> {
-    const response = await this.apiClient.post("/auth/change-password", data);
+    const response = await this.apiClient.post(CHANGE_PASSWORD, data);
     return response.data;
   }
 
   async logout(): Promise<ApiResponse<{ message: string }>> {
-    const response = await this.apiClient.post("/auth/logout");
+    const response = await this.apiClient.post(LOGOUT);
     return response.data;
   }
 
   async getCurrentUser(): Promise<ApiResponse<{ user: any }>> {
-    const response = await this.apiClient.get("/auth/user");
+    const response = await this.apiClient.get("/auth/me");
     return response.data;
   }
 }
